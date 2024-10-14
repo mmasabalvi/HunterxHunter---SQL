@@ -1,0 +1,21 @@
+CardID,CardName,CardType,CardRarity
+C-001,Heal,Healing,Common
+C-002,Fireball,Spell,Rare
+C-003,Teleport,Spell,Ultra Rare
+C-004,Sword of Truth,Weapon,Rare
+C-005,Invisibility Cloak,Spell,Ultra Rare
+C-006,Thunderstrike,Spell,Rare
+C-007,Energy Shield,Spell,Common
+C-008,Flame Spear,Weapon,Rare
+C-009,Wind Blade,Weapon,Ultra Rare
+C-010,Mystic Mirror,Spell,Common
+C-011,Healing Potion,Healing,Common
+C-012,Mind Control,Spell,Ultra Rare
+C-013,Dark Flame,Spell,Rare
+C-014,Ice Shard,Weapon,Common
+C-015,Lightning Rod,Spell,Ultra Rare
+C-016,Stone Golem,Summoning,Ultra Rare
+C-017,Teleportation Scroll,Spell,Rare
+C-018,Curse of Weakness,Spell,Common
+C-019,Dragon Claw,Weapon,Ultra Rare
+C-020,Time Reversal,Spell,Rare

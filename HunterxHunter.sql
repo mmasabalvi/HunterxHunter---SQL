@@ -1,11 +1,12 @@
-CREATE DATABASE GreedIslandTournament
-use GreedIslandTournament
+--CREATE DATABASE GreedIslandTournamentt
+use GreedIslandTournamentt
 
 CREATE TABLE Hunter
 (
 	HunterID VARCHAR(12) PRIMARY KEY,
+	CHECK (HunterID LIKE '[A-Z][A-Z]-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9]'),
 	HunterName VARCHAR(50) NOT NULL,
-	HunterNenType VARCHAR(10) NOT NULL CHECK (HunterNenType IN ('Enhancer', 'Conjurer', 'Emitter')), -- Use VARCHAR with a CHECK constraint	QuestsCompleted INT NOT NULL,
+	HunterNenType VARCHAR(12) NOT NULL CHECK (HunterNenType IN ('Enhancer', 'Conjurer', 'Emitter', 'Specialist', 'Transmuter', 'Manipulator')), -- Use VARCHAR with a CHECK constraint	QuestsCompleted INT NOT NULL,
 	HunterQuestsCompleted INT NOT NULL,
 	HunterBattlesWon INT NOT NULL
 );
@@ -13,8 +14,9 @@ CREATE TABLE Hunter
 CREATE TABLE Card
 (
     CardID VARCHAR(12) PRIMARY KEY,
+	CHECK (CardID LIKE 'C-[0-9][0-9][0-9]'),
     CardName VARCHAR(50) NOT NULL,
-    CardType VARCHAR(10) NOT NULL CHECK (CardType IN ('Spell', 'Weapon', 'Healing')),
+    CardType VARCHAR(10) NOT NULL CHECK (CardType IN ('Spell', 'Weapon', 'Healing', 'Summoning')),
     CardRarity VARCHAR(10) NOT NULL CHECK (CardRarity IN ('Common', 'Rare', 'Ultra Rare')) 
 );
 
@@ -80,7 +82,20 @@ CREATE TABLE Collection --relationship table
 );
 
 
+--INSERT INTO Card (CardID, CardName, CardType, CardRarity) 
+--SELECT CardID, CardName, CardType, CardRarity                         
+--FROM dbo.cards; 
+
+--drop table cards
 
 
+--INSERT INTO Hunter (HunterID, HunterName, HunterNenType, HunterQuestsCompleted, HunterBattlesWon) 
+--SELECT HunterID, HunterName, HunterNenType, HunterQuestsCompleted, HunterBattlesWon                         
+--FROM dbo.hunters; 
 
+--drop table hunters
+
+-- Query 1:
+SELECT HunterName, HunterNenType
+FROM Hunter
 
