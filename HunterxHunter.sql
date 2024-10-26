@@ -1,4 +1,4 @@
-CREATE DATABASE GreedIslandTournament
+--CREATE DATABASE GreedIslandTournament
 use GreedIslandTournament
 
 CREATE TABLE Hunter
@@ -242,42 +242,38 @@ INSERT INTO Collection (HunterID, CardID, Quantity) VALUES
 ('GI-2024-010', 'C-019', 3),
 ('GI-2024-010', 'C-020', 1);
 
-
-SELECT * FROM Collection;
-
-Select * from Card
-
-Select * from Battle
-
 -- Query 1:
 SELECT HunterName, HunterNenType
 FROM Hunter
 
 -- Query 2:
-SELECT top 1 c2.CardType, SUM(c.Quantity) AS total_quantity
+SELECT TOP 1 c2.CardType, SUM(c.Quantity) AS total_quantity
 FROM Collection c
 JOIN Card c2 ON c.CardID = c2.CardID
 GROUP BY c2.CardType
 ORDER BY total_quantity DESC;
 
---Query 3:
-select LocationName,LocationDifficultyLevel from Location
-where LocationDifficultyLevel='Hard'
+-- Query 3:
+SELECT LocationName, LocationDifficultyLevel 
+FROM Location
+WHERE LocationDifficultyLevel = 'Hard';
 
---Query 4:
-select HunterID, sum(Quantity) as TotalCardsCollected
-from collection
-where HunterID='GI-2024-004'
-group by HunterID
+-- Query 4:
+SELECT HunterID, SUM(Quantity) AS TotalCardsCollected
+FROM collection
+WHERE HunterID = 'GI-2024-004'
+GROUP BY HunterID;
 
+-- Query 5:
+SELECT * 
+FROM Hunter 
+WHERE hunterID IN (SELECT WinningHunterID 
+				   FROM Victor
+				   GROUP BY WinningHunterID 
+				   HAVING COUNT(WinningHunterID) > 2)
 
---Query 5:
-select * from Hunter where hunterID in (select WinningHunterID from Victor
-group by WinningHunterID having count(WinningHunterID)>2)
-
-
---Query 6:
-SELECT top 1 h.HunterName, h.HunterID, COUNT(v.WinningHunterID) AS victories
+-- Query 6:
+SELECT TOP 1 h.HunterName, h.HunterID, COUNT(v.WinningHunterID) AS victories
 FROM Victor v
 JOIN Battle b ON v.BattleID = b.BattleID
 JOIN Location l ON b.LocationID = l.LocationID
@@ -286,16 +282,16 @@ WHERE l.LocationRegion = 'Forest'
 GROUP BY h.HunterID, h.HunterName
 ORDER BY victories DESC;
 
---Query 7:
-select * from Hunter
-where HunterQuestsCompleted>5
+-- Query 7:
+SELECT * FROM Hunter
+WHERE HunterQuestsCompleted > 5
 
---Query 8:
-select HunterNenType, avg(HunterQuestsCompleted) as averageQuests from Hunter
-where HunterNenType='Enhancer'
-group by HunterNenType;
+-- Query 8:
+SELECT HunterNenType, AVG(HunterQuestsCompleted) AS averageQuests FROM Hunter
+WHERE HunterNenType = 'Enhancer'
+GROUP BY HunterNenType;
 
---Query 9
+-- Query 9:
 SELECT q.QuestID, q.QuestName, l.LocationDifficultyLevel
 FROM Quest q
 JOIN Location l ON q.LocationID = l.LocationID
@@ -313,114 +309,109 @@ WHERE
          END)
      FROM Location);
 
-
--- Query 10: 
-SELECT H.HunterID, H.HunterName, sum(P.damagedealt) as TotalDamageDealt
+-- Query 10:
+SELECT H.HunterID, H.HunterName, SUM(P.damagedealt) AS TotalDamageDealt
 FROM Hunter H LEFT JOIN Performance P
-on H.HunterID = P.HunterID
-GROUP BY H.HunterID, H.hunterName;
+ON H.HunterID = P.HunterID
+GROUP BY H.HunterID, H.HunterName;
 
--- Query 11
+-- Query 11:
 SELECT * 
 FROM Card
 WHERE CardType = 'Spell';
 
--- Query 12
-SELECT H.*, C.CardID ,CC.CardRarity 
+-- Query 12:
+SELECT H.*, C.CardID, CC.CardRarity 
 FROM Hunter H 
-JOIN Collection C on h.HunterID = C.HunterID 
-JOIN Card CC on C.CardID = CC.CardID
-where CC.CardRarity = 'Ultra Rare';
+JOIN Collection C ON H.HunterID = C.HunterID 
+JOIN Card CC ON C.CardID = CC.CardID
+WHERE CC.CardRarity = 'Ultra Rare';
 
--- Query 13 
-SELECT TOP 3 H.HunterID, H.HunterName, sum(P.damagedealt) as TotalDamageDealt -- like Query 10
+-- Query 13:
+SELECT TOP 3 H.HunterID, H.HunterName, SUM(P.damagedealt) AS TotalDamageDealt
 FROM Hunter H LEFT JOIN Performance P
-on H.HunterID = P.HunterID
-GROUP BY H.HunterID, H.hunterName
-ORDER BY TotalDamageDealt desc;
+ON H.HunterID = P.HunterID
+GROUP BY H.HunterID, H.HunterName
+ORDER BY TotalDamageDealt DESC;
 
--- Query 14
-Select L.LocationRegion, COUNT(Q.QuestID) as NumberofQuests
-FROM Quest Q join LOCATION L
-on Q.LocationID = L.LocationID
+-- Query 14:
+SELECT L.LocationRegion, COUNT(Q.QuestID) AS NumberofQuests
+FROM Quest Q JOIN Location L
+ON Q.LocationID = L.LocationID
 WHERE L.LocationRegion = 'Forest'
 GROUP BY L.LocationRegion;
 
---Query 15
-Select H.HunterName, H.HunterID, sum(C.Quantity) as TotalCards
-From Hunter H Left join Collection C
-on H.HunterID = C.HunterID
-Group by H.HunterID, H.HunterName;
+-- Query 15:
+SELECT H.HunterName, H.HunterID, SUM(C.Quantity) AS TotalCards
+FROM Hunter H LEFT JOIN Collection C
+ON H.HunterID = C.HunterID
+GROUP BY H.HunterID, H.HunterName;
 
--- Query 16
-Select B.*, L.LocationRegion
-FROM Battle B join LOCATION L
-on B.LocationID = L.LocationID
-WHERE L.LocationRegion = 'Mountain'
+-- Query 16:
+SELECT B.*, L.LocationRegion
+FROM Battle B JOIN Location L
+ON B.LocationID = L.LocationID
+WHERE L.LocationRegion = 'Mountain';
 
--- Query 17
-Select B.*
-From Battle B
-Where B.BattleDate = '2024-11-1';
+-- Query 17:
+SELECT B.*
+FROM Battle B
+WHERE B.BattleDate = '2024-11-1';
 
--- Query 18 --add hunters with more than 1 utlra rare cards owned please
-SELECT Top 3 H.HunterID, H.HunterName, count(CC.CardRarity) as [Ultra Rare Cards Owned]
+-- Query 18:
+SELECT TOP 3 H.HunterID, H.HunterName, COUNT(CC.CardRarity) AS [Ultra Rare Cards Owned]
 FROM Hunter H 
-JOIN Collection C on h.HunterID = C.HunterID 
-JOIN Card CC on C.CardID = CC.CardID
-where CC.CardRarity = 'Ultra Rare'
-Group by H.HunterID, H.HunterName
-Order by [Ultra Rare Cards Owned] desc;
+JOIN Collection C ON H.HunterID = C.HunterID 
+JOIN Card CC ON C.CardID = CC.CardID
+WHERE CC.CardRarity = 'Ultra Rare'
+GROUP BY H.HunterID, H.HunterName
+ORDER BY [Ultra Rare Cards Owned] DESC;
 
--- Query 19
-Select L.LocationRegion, count(B.BattleID) as [Total Battles Held]
-FROM Battle B join LOCATION L
-on B.LocationID = L.LocationID
-Group by L.LocationRegion;
+-- Query 19:
+SELECT L.LocationRegion, COUNT(B.BattleID) AS [Total Battles Held]
+FROM Battle B JOIN Location L
+ON B.LocationID = L.LocationID
+GROUP BY L.LocationRegion;
 
--- Query 20 
-Select V.WinningHunterID as [Hunters Won in Every Region]
-From Victor V inner join Battle B
-on V.BattleID = B.BattleID 
-Inner Join Location L on B.LocationID = L.LocationID 
+-- Query 20:
+SELECT V.WinningHunterID AS [Hunters Won in Every Region]
+FROM Victor V INNER JOIN Battle B
+ON V.BattleID = B.BattleID 
+INNER JOIN Location L ON B.LocationID = L.LocationID 
 GROUP BY V.WinningHunterID
-HAVING COUNT(DISTINCT L.LocationRegion) = 3;			--(SELECT COUNT(DISTINCT LocationRegion) FROM Location);
+HAVING COUNT(DISTINCT L.LocationRegion) = 3;
 
+-- Query 21:
+SELECT P.HunterID, SUM(P.DamageDealt) AS TotalDamageDealt
+FROM Performance P
+JOIN Battle B ON P.BattleID = B.BattleID
+JOIN Location L ON B.LocationID = L.LocationID
+WHERE L.LocationDifficultyLevel = 'Hard'
+GROUP BY P.HunterID
+ORDER BY TotalDamageDealt DESC;
 
+-- Query 22:
+SELECT DISTINCT H.HunterID, H.HunterName, L.LocationRegion 
+FROM Hunter H
+JOIN Battle B ON B.Hunter1_ID = H.HunterID OR B.Hunter2_ID = H.HunterID
+JOIN Location L ON L.LocationID = B.LocationID
+WHERE L.LocationRegion = 'Beach';
 
---where L.LocationRegion = 'Mountain' AND L.LocationRegion = 'Forest' AND L.LocationRegion = 'Beach';
+-- Query 23:
+SELECT TOP 1 HunterID, SUM(DamageDealt) AS DamageDealt
+FROM Performance 
+GROUP BY HunterID 
+ORDER BY DamageDealt DESC;
 
---Query 21:
-SELECT p.HunterID, SUM(p.DamageDealt) AS totalDamageDealt
-FROM Performance p
-JOIN Battle b ON p.BattleID = b.BattleID
-JOIN Location l ON b.LocationID = l.LocationID
-WHERE l.LocationDifficultyLevel = 'Hard'
-GROUP BY p.HunterID
-ORDER BY totalDamageDealt DESC;
+-- Query 24:
+SELECT H.HunterID, SUM(C.Quantity) AS RareCardCount
+FROM Hunter H
+LEFT JOIN Collection C ON C.HunterID = H.HunterID
+LEFT JOIN Card CC ON C.CardID = CC.CardID
+WHERE CC.CardRarity = 'Rare'
+GROUP BY H.HunterID
+ORDER BY RareCardCount DESC;
 
-
---Query 22:
-select distinct h.HunterID,h.HunterName,l.LocationRegion from Hunter h
-join Battle b on b.Hunter1_ID=h.HunterID or b.Hunter2_ID=h.HunterID
-join Location l on l.LocationID=b.LocationID
-where l.LocationRegion='Beach'
-
-
-
-
---Query 23:
-select top 1 hunterID,sum(DamageDealt) from Performance group by hunterID order by DamageDealt desc;
-
-
---Query 24
-SELECT h.HunterID, sum(c.Quantity) AS rareCardCount
-FROM hunter h
-left join Collection c on c.HunterID=h.hunterID
-left join Card cc ON c.cardID=cc.CardID
-WHERE cc.CardRarity = 'Rare'
-group by h.hunterID
-order by rareCardCount desc;
 
 
 --help using t-sql
@@ -430,4 +421,3 @@ LEFT JOIN Collection c ON c.HunterID = h.HunterID
 LEFT JOIN Card cc ON c.CardID = cc.CardID
 GROUP BY h.HunterID
 ORDER BY rareCardCount DESC;
-
